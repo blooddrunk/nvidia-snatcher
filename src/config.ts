@@ -48,6 +48,9 @@ const notifications = {
 		accessToken: process.env.TELEGRAM_ACCESS_TOKEN ?? '',
 		chatId: process.env.TELEGRAM_CHAT_ID ?? ''
 	},
+	severChan: {
+		scKey: process.env.SEVER_CHAN_SCKEY ?? ''
+	},
 	test: process.env.NOTIFICATION_TEST === 'true'
 };
 

@@ -7,6 +7,7 @@ import {sendPushoverNotification} from './pushover';
 import {sendTelegramMessage} from './telegram';
 import {sendDiscordMessage} from './discord';
 import {sendDesktopNotification} from './desktop';
+import {sendWeChatMessage} from './serverChan';
 
 import {Link} from '../store/model';
 
@@ -46,5 +47,9 @@ export function sendNotification(cartUrl: string, link: Link) {
 
 	if (notifications.desktop) {
 		sendDesktopNotification(cartUrl, link);
+	}
+
+	if(notifications.severChan.scKey) {
+		sendWeChatMessage(cartUrl, link)
 	}
 }
