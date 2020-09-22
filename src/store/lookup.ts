@@ -7,6 +7,8 @@ import {sendNotification} from '../notification';
 import {includesLabels} from './includes-labels';
 import {closePage, delay, getSleepTime} from '../util';
 
+const inStock: Record<string, boolean> = {};
+
 /**
  * Returns true if the brand should be checked for stock
  *
@@ -55,7 +57,7 @@ async function lookup(browser: Browser, store: Store) {
 		page.setDefaultNavigationTimeout(Config.page.navigationTimeout);
 		await page.setUserAgent(Config.page.userAgent);
 
-		const graphicsCard = `${link.brand} ${link.model}`;
+		const graphicsCard = `${link.brand} ${link.model} ${link.series}`;
 
 		let response: Response | null;
 		try {
@@ -73,6 +75,8 @@ async function lookup(browser: Browser, store: Store) {
 
 		if (includesLabels(textContent, store.labels.outOfStock)) {
 			Logger.info(`✖ [${store.name}] still out of stock: ${graphicsCard}`);
+		} else if (store.labels.bannedSeller && includesLabels(textContent, store.labels.bannedSeller)) {
+			Logger.warn(`✖ [${store.name}] banned seller detected: ${graphicsCard}. skipping...`);
 		} else if (store.labels.captcha && includesLabels(textContent, store.labels.captcha)) {
 			Logger.warn(`✖ [${store.name}] CAPTCHA from: ${graphicsCard}. Waiting for a bit with this store...`);
 			await delay(getSleepTime());
@@ -81,6 +85,12 @@ async function lookup(browser: Browser, store: Store) {
 		} else {
 			Logger.info(`🚀🚀🚀 [${store.name}] ${graphicsCard} IN STOCK 🚀🚀🚀`);
 			Logger.info(link.url);
+			if (Config.page.inStockWaitTime) {
+				inStock[store.name] = true;
+				setTimeout(() => {
+					inStock[store.name] = false;
+				}, 1000 * Config.page.inStockWaitTime);
+			}
 
 			if (Config.page.capture) {
 				Logger.debug('ℹ saving screenshot');
@@ -91,7 +101,11 @@ async function lookup(browser: Browser, store: Store) {
 			const givenUrl = link.cartUrl ? link.cartUrl : link.url;
 
 			if (Config.browser.open) {
-				await open(givenUrl);
+				if (link.openCartAction === undefined) {
+					await open(givenUrl);
+				} else {
+					link.openCartAction(browser);
+				}
 			}
 
 			sendNotification(givenUrl, link);
@@ -105,7 +119,11 @@ async function lookup(browser: Browser, store: Store) {
 export async function tryLookupAndLoop(browser: Browser, store: Store) {
 	Logger.debug(`[${store.name}] Starting lookup...`);
 	try {
-		await lookup(browser, store);
+		if (Config.page.inStockWaitTime && inStock[store.name]) {
+			Logger.info(`[${store.name}] Has stock, waiting before trying to lookup again...`);
+		} else {
+			await lookup(browser, store);
+		}
 	} catch (error) {
 		Logger.error(error);
 	}
