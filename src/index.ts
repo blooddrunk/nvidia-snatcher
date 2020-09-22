@@ -15,6 +15,7 @@ puppeteer.use(adBlocker);
  */
 async function main() {
 	const browser = await puppeteer.launch({
+		args: ['--no-sandbox'],
 		headless: Config.browser.isHeadless,
 		defaultViewport: {
 			height: Config.page.height,
