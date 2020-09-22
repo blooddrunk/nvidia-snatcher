@@ -5,10 +5,10 @@ import {Stores} from './store/model';
 import {Logger} from './logger';
 import {tryLookupAndLoop} from './store';
 import {getSleepTime} from './util';
-import {adBlocker} from './adblocker';
+// import {adBlocker} from './adblocker';
 
 puppeteer.use(stealthPlugin());
-puppeteer.use(adBlocker);
+// puppeteer.use(adBlocker);
 
 /**
  * Starts the bot.

@@ -7,13 +7,15 @@ const requestURL = `https://sc.ftqq.com/${Config.notifications.severChan.scKey}.
 
 export async function  sendWeChatMessage(cartUrl: string, link: Link) {
   try {
-    await xios.post(requestURL, {
-      text: 'Stock Notification',
-      desp: `
-        URL: ${cartUrl},\n
-        Brand: ${link.brand},\n
-        Model: ${link.model}
-      `
+    await axios.get(requestURL, {
+      params: {
+        text: 'Stock_Notification',
+        desp: `
+          URL: ${cartUrl},\n
+          Brand: ${link.brand},\n
+          Model: ${link.model}
+        `
+      }
     })
     Logger.info(`↗ WeChat message sent: ${cartUrl}`);
   } catch (error) {
