@@ -1,11 +1,11 @@
+import {Config} from './config';
+import {Logger} from './logger';
+import {Stores} from './store/model';
+// import {adBlocker} from './adblocker';
+import {getSleepTime} from './util';
 import puppeteer from 'puppeteer-extra';
 import stealthPlugin from 'puppeteer-extra-plugin-stealth';
-import {Config} from './config';
-import {Stores} from './store/model';
-import {Logger} from './logger';
 import {tryLookupAndLoop} from './store';
-import {getSleepTime} from './util';
-// import {adBlocker} from './adblocker';
 
 puppeteer.use(stealthPlugin());
 // puppeteer.use(adBlocker);
@@ -16,11 +16,11 @@ puppeteer.use(stealthPlugin());
 async function main() {
 	const browser = await puppeteer.launch({
 		args: ['--no-sandbox'],
-		headless: Config.browser.isHeadless,
 		defaultViewport: {
 			height: Config.page.height,
 			width: Config.page.width
-		}
+		},
+		headless: Config.browser.isHeadless
 	});
 
 	for (const store of Stores) {
