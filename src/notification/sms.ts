@@ -1,51 +1,51 @@
-import {Config} from '../config';
-import {Link} from '../store/model';
-import {Logger} from '../logger';
+import {Link, Store} from '../store/model';
+import {Print, logger} from '../logger';
 import Mail from 'nodemailer/lib/mailer';
-import nodemailer from 'nodemailer';
+import {config} from '../config';
+import {transporter} from './email';
 
-const subject = 'NVIDIA - BUY NOW';
-const [email, phone] = [Config.notifications.email, Config.notifications.phone];
+if (config.notifications.phone.number && !config.notifications.email.username) {
+	logger.warn('✖ in order to receive sms alerts, email notifications must also be configured');
+}
 
-const transporter = nodemailer.createTransport({
-	auth: {
-		pass: email.password,
-		user: email.username
-	},
-	service: 'gmail'
-});
+const [email, phone] = [config.notifications.email, config.notifications.phone];
 
-const mailOptions: Mail.Options = {
-	from: Config.notifications.email.username,
-	subject,
-	to: generateAddress()
-};
+export function sendSMS(link: Link, store: Store) {
+	if (phone.number) {
+		logger.debug('↗ sending sms');
+		const carrier = phone.carrier;
 
-export function sendSMS(text: string, link: Link) {
-	mailOptions.text = text;
+		if (carrier && phone.availableCarriers.has(carrier)) {
+			const mailOptions: Mail.Options = {
+				attachments: link.screenshot ? [
+					{
+						filename: link.screenshot,
+						path: `./${link.screenshot}`
+					}
+				] : undefined,
+				from: email.username,
+				subject: Print.inStock(link, store, false, true),
+				text: link.cartUrl ? link.cartUrl : link.url,
+				to: generateAddress()
+			};
 
-	if (link.screenshot) {
-		mailOptions.attachments = [
-			{
-				filename: link.screenshot,
-				path: `./${link.screenshot}`
-			}
-		];
-	}
-
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			Logger.error(error);
-		} else {
-			// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-			Logger.info(`↗ sms sent: ${info.response}`);
+			transporter.sendMail(mailOptions, error => {
+				if (error) {
+					logger.error('✖ couldn\'t send sms', error);
+				} else {
+					logger.info('✔ sms sent');
+				}
+			});
 		}
-	});
+	}
 }
 
 function generateAddress() {
-	const carrier = phone.carrier.toLowerCase();
+	const carrier = phone.carrier;
+
 	if (carrier && phone.availableCarriers.has(carrier)) {
 		return [phone.number, phone.availableCarriers.get(carrier)].join('@');
 	}
+
+	logger.error('✖ unknown carrier', carrier);
 }

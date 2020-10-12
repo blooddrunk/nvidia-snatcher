@@ -1,25 +1,38 @@
-import {Config} from '../config';
-import {Logger} from '../logger';
+import {config} from '../config';
 import fs from 'fs';
+import {logger} from '../logger';
 import playerLib from 'play-sound';
 
-const notificationSound = Config.notifications.playSound;
-const player = playerLib();
+let player: any;
+
+if (config.notifications.playSound) {
+	player = playerLib();
+
+	if (player.player === null) {
+		logger.warn('✖ couldn\'t find sound player');
+	} else {
+		const playerName: string = player.player;
+		logger.info(`✔ sound player found: ${playerName}`);
+	}
+}
 
 export function playSound() {
-	// Check if file exists
-	fs.access(notificationSound, fs.constants.F_OK, err => {
-		if (err) {
-			Logger.error(`error opening sound file: ${err.message}`);
-			return;
-		}
+	if (config.notifications.playSound && player.player !== null) {
+		logger.debug('↗ playing sound');
 
-		player.play(notificationSound, (err: string) => {
-			Logger.info('↗ playing sound');
-
-			if (err) {
-				Logger.error(`error playing sound: ${err}`);
+		fs.access(config.notifications.playSound, fs.constants.F_OK, error => {
+			if (error) {
+				logger.error(`✖ error opening sound file: ${error.message}`);
+				return;
 			}
+
+			player.play(config.notifications.playSound, (error: Error) => {
+				if (error) {
+					logger.error('✖ couldn\'t play sound', error);
+				}
+
+				logger.info('✔ played sound');
+			});
 		});
-	});
+	}
 }

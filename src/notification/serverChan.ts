@@ -1,24 +1,25 @@
-import {Config} from '../config';
-import {Link} from '../store/model';
-import {Logger} from '../logger';
+import {Link, Store} from '../store/model';
+import {config} from '../config';
+import {Print, logger} from '../logger';
+
 import axios from 'axios';
 
-const requestURL = `https://sc.ftqq.com/${Config.notifications.severChan.scKey}.send`
+const requestURL = `https://sc.ftqq.com/${config.notifications.severChan.scKey}.send`
 
-export async function  sendWeChatMessage(cartUrl: string, link: Link) {
+export async function  sendWeChatMessage(link: Link, store: Store) {
   try {
     await axios.get(requestURL, {
       params: {
-        text: 'Stock_Notification',
+        text: Print.inStock(link, store, false, true),
         desp: `
-          URL: ${cartUrl},\n
+          URL: ${link.cartUrl ? link.cartUrl : link.url},\n
           Brand: ${link.brand},\n
           Model: ${link.model}
         `
       }
     })
-    Logger.info(`↗ WeChat message sent: ${cartUrl}`);
+    logger.info(`↗ WeChat message sent`);
   } catch (error) {
-    Logger.error(error);
+    logger.error('✖ couldn\'t send WeChat message', error);
   }
 }

@@ -1,44 +1,53 @@
-import {Config} from '../config';
-import {Link} from '../store/model';
-import {Logger} from '../logger';
+import {Link, Store} from '../store/model';
+import {Print, logger} from '../logger';
 import Mail from 'nodemailer/lib/mailer';
+import {config} from '../config';
 import nodemailer from 'nodemailer';
 
-const email = Config.notifications.email;
-const subject = 'NVIDIA - BUY NOW';
+const email = config.notifications.email;
 
-const transporter = nodemailer.createTransport({
-	auth: {
-		pass: email.password,
-		user: email.username
-	},
-	service: 'gmail'
+const transportOptions: any = {};
+
+if (email.username && (email.password || email.smtpAddress)) {
+	transportOptions.auth = {};
+	transportOptions.auth.user = email.username;
+	transportOptions.auth.pass = email.password;
+}
+
+if (email.smtpAddress) {
+	transportOptions.host = email.smtpAddress;
+	transportOptions.port = email.smtpPort;
+} else {
+	transportOptions.service = 'gmail';
+}
+
+export const transporter = nodemailer.createTransport({
+	...transportOptions
 });
 
-const mailOptions: Mail.Options = {
-	from: email.username,
-	subject,
-	to: email.username
-};
+export function sendEmail(link: Link, store: Store) {
+	if (email.username && (email.password || email.smtpAddress)) {
+		logger.debug('↗ sending email');
 
-export function sendEmail(cartUrl: string, link: Link) {
-	mailOptions.text = cartUrl;
+		const mailOptions: Mail.Options = {
+			attachments: link.screenshot ? [
+				{
+					filename: link.screenshot,
+					path: `./${link.screenshot}`
+				}
+			] : undefined,
+			from: email.username,
+			subject: Print.inStock(link, store),
+			text: link.cartUrl ? link.cartUrl : link.url,
+			to: email.to
+		};
 
-	if (link.screenshot) {
-		mailOptions.attachments = [
-			{
-				filename: link.screenshot,
-				path: `./${link.screenshot}`
+		transporter.sendMail(mailOptions, error => {
+			if (error) {
+				logger.error('✖ couldn\'t send email', error);
+			} else {
+				logger.info('✔ email sent');
 			}
-		];
+		});
 	}
-
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			Logger.error(error);
-		} else {
-			// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-			Logger.info(`↗ email sent: ${info.response}`);
-		}
-	});
 }

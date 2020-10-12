@@ -2,14 +2,24 @@ import {Store} from './store';
 
 export const AmazonCa: Store = {
 	labels: {
-		captcha: ['enter the characters you see below'],
-		outOfStock: ['currently unavailable']
+		captcha: {
+			container: 'body',
+			text: ['enter the characters you see below']
+		},
+		inStock: {
+			container: '#desktop_buybox',
+			text: ['add to cart']
+		},
+		maxPrice: {
+			container: 'span[class*="PriceString"]',
+			euroFormat: false
+		}
 	},
 	links: [
 		{
-			brand: 'TEST',
-			model: 'CARD',
-			series: 'debug',
+			brand: 'test:brand',
+			model: 'test:model',
+			series: 'test:series',
 			url: 'https://www.amazon.ca/dp/B07PBLD2MX'
 		},
 		{
@@ -17,6 +27,12 @@ export const AmazonCa: Store = {
 			model: 'gaming x trio',
 			series: '3080',
 			url: 'https://www.amazon.ca/dp/B08HR7SV3M'
+		},
+		{
+			brand: 'msi',
+			model: 'ventus 3x oc',
+			series: '3080',
+			url: 'https://www.amazon.ca/dp/B08HR5SXPS'
 		},
 		{
 			brand: 'evga',
@@ -73,10 +89,46 @@ export const AmazonCa: Store = {
 			url: 'https://www.amazon.ca/dp/B08HH5WF97'
 		},
 		{
+			brand: 'zotac',
+			model: 'trinity',
+			series: '3080',
+			url: 'https://www.amazon.ca/dp/B08HJNKT3P'
+		},
+		{
+			brand: 'zotac',
+			model: 'trinity',
+			series: '3090',
+			url: 'https://www.amazon.ca/dp/B08HJQ182D'
+		},
+		{
 			brand: 'msi',
 			model: 'ventus 3x oc',
-			series: '3080',
-			url: 'https://www.amazon.ca/dp/B08HR5SXPS'
+			series: '3090',
+			url: 'https://www.amazon.ca/dp/B08HR9D2JS'
+		},
+		{
+			brand: 'gigabyte',
+			model: 'gaming oc',
+			series: '3090',
+			url: 'https://www.amazon.ca/dp/B08HJRF2CN'
+		},
+		{
+			brand: 'gigabyte',
+			model: 'eagle oc',
+			series: '3090',
+			url: 'https://www.amazon.ca/dp/B08HJPDJTY'
+		},
+		{
+			brand: 'asus',
+			model: 'tuf',
+			series: '3090',
+			url: 'https://www.amazon.ca/dp/B08HJGNJ81'
+		},
+		{
+			brand: 'asus',
+			model: 'tuf oc',
+			series: '3090',
+			url: 'https://www.amazon.ca/dp/B08HJLLF7G'
 		}
 	],
 	name: 'amazon-ca'
