@@ -5,6 +5,7 @@ import {AmazonCa} from './amazon-ca';
 import {AmazonDe} from './amazon-de';
 import {AmazonNl} from './amazon-nl';
 import {AmazonUk} from './amazon-uk';
+import {AmazonCN} from './amazon-cn';
 import {Aria} from './aria';
 import {Asus} from './asus';
 import {AsusDe} from './asus-de';
@@ -32,6 +33,7 @@ import {OfficeDepot} from './officedepot';
 import {Overclockers} from './overclockers';
 import {Pny} from './pny';
 import {ProshopDE} from './proshop-de';
+import {ProshopDK} from './proshop-dk';
 import {Scan} from './scan';
 import {Store} from './store';
 import {Very} from './very';
@@ -47,6 +49,7 @@ const masterList = new Map([
 	[AmazonDe.name, AmazonDe],
 	[AmazonNl.name, AmazonNl],
 	[AmazonUk.name, AmazonUk],
+	[AmazonCN.name, AmazonCN],
 	[Aria.name, Aria],
 	[Asus.name, Asus],
 	[AsusDe.name, AsusDe],
@@ -73,6 +76,7 @@ const masterList = new Map([
 	[OfficeDepot.name, OfficeDepot],
 	[Overclockers.name, Overclockers],
 	[ProshopDE.name, ProshopDE],
+	[ProshopDK.name, ProshopDK],
 	[Pny.name, Pny],
 	[Scan.name, Scan],
 	[Very.name, Very],
