@@ -3,6 +3,7 @@ import {playSound} from './sound';
 import {sendDesktopNotification} from './desktop';
 import {sendDiscordMessage} from './discord';
 import {sendEmail} from './email';
+import {sendMqttMessage} from './mqtt';
 import {sendPushbulletNotification} from './pushbullet';
 import {sendPushoverNotification} from './pushover';
 import {sendSlackMessage} from './slack';
@@ -29,4 +30,5 @@ export function sendNotification(link: Link, store: Store) {
 	sendTweet(link, store);
 	sendWeChatMessage(link, store);
 	sendTwilioMessage(link, store);
+	sendMqttMessage(link, store);
 }
