@@ -11,6 +11,7 @@ import {sendSms} from './sms';
 import {sendTelegramMessage} from './telegram';
 import {sendTweet} from './twitter';
 import {sendTwilioMessage} from './twilio';
+import {sendTwitchMessage} from './twitch';
 
 import {sendWeChatMessage} from './serverChan';
 
@@ -23,6 +24,7 @@ export function sendNotification(link: Link, store: Store) {
 	sendDesktopNotification(link, store);
 	// Non-priority
 	sendDiscordMessage(link, store);
+	sendMqttMessage(link, store);
 	sendPushbulletNotification(link, store);
 	sendPushoverNotification(link, store);
 	sendSlackMessage(link, store);
@@ -30,5 +32,5 @@ export function sendNotification(link: Link, store: Store) {
 	sendTweet(link, store);
 	sendWeChatMessage(link, store);
 	sendTwilioMessage(link, store);
-	sendMqttMessage(link, store);
+	sendTwitchMessage(link, store);
 }
