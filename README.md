@@ -124,7 +124,7 @@ Here is a list of variables that you can use to customize your newly copied `.en
 | `PUSHOVER_PRIORITY` | Pushover message priority |
 | `SCREENSHOT` | Capture screenshot of page if a card is found | Default: `true` |
 | `SHOW_ONLY_BRANDS` | Filter to show specified brands | Comma separated, e.g.: `evga,zotac` |
-| `SHOW_ONLY_MODELS` | Filter to show specified models | Comma separated, e.g.: `founders edition,rog strix` |
+| `SHOW_ONLY_MODELS` | Filter to show specified models | Both supported formats are comma separated <br/><br/>1. Standard  E.g.: `founders edition,rog strix` <br/><br/> 2. Advanced E.g: `MODEL:SERIES`, E.g: `founders edition:3090,rog strix` |
 | `SHOW_ONLY_SERIES` | Filter to show specified series | Comma separated, e.g.: `3080` |
 | `SLACK_CHANNEL` | Slack channel for posting | E.g.: `update`, no need for `#` |
 | `SLACK_TOKEN` | Slack API token | |
@@ -149,6 +149,7 @@ Here is a list of variables that you can use to customize your newly copied `.en
 | `TWITCH_REFRESH_TOKEN` | Twitch refresh token | |
 | `TWITCH_CHANNEL` | Twitch channel | |
 | `USER_AGENT` | Custom User-Agents headers for HTTP requests | Newline separated, e.g.: `USER_AGENT_STRING1 \n USER_AGENT_STRING2` | | Default: `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36` |
+| `WEB_PORT` | Starts a webserver to be able to control the bot while it is running; optional | Default: disabled |
 
 > :point_right: If you have multi-factor authentication (MFA), you will need to create an [app password](https://myaccount.google.com/apppasswords) and use this instead of your Gmail password.
 
@@ -250,13 +251,13 @@ Here is a list of variables that you can use to customize your newly copied `.en
 |:---:|---|
 | `asus` | `rog strix`, `rog strix oc`, `tuf`, `tuf oc` |
 | `evga` | `ftw3`, `ftw3 ultra`, `xc3`, `xc3 black`, `xc3 ultra` |
-| `gainward` | `phoenix`, `phoenix gs`, `phoenix gs oc` |
+| `gainward` | `phantom gs`, `phoenix`, `phoenix gs`, `phoenix gs oc` |
 | `gigabyte` | `aorus master`, `aorus xtreme`, `eagle`, `eagle oc`, `gaming`, `gaming oc`, `turbo`, `vision`, `vision oc` |
 | `inno3d` | `gaming x3`, `ichill x3`, `ichill x4`, `twin x2 oc` |
 | `kfa2` | `sg oc` |
 | `msi` | `gaming x trio`, `ventus 3x`, `ventus 3x oc` |
 | `nvidia` | `founders edition` |
-| `palit` | `gaming pro`, `gaming pro oc` |
+| `palit` | `gamerock oc`, `gaming pro`, `gaming pro oc` |
 | `pny` | `dual fan`, `xlr8`, `xlr8 rgb` |
 | `zotac` | `amp holo`, `amp extreme holo`, `trinity`, `trinity oc` |
 

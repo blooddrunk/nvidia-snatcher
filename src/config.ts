@@ -247,7 +247,13 @@ const store = {
 	},
 	microCenterLocation: envOrArray(process.env.MICROCENTER_LOCATION, ['web']),
 	showOnlyBrands: envOrArray(process.env.SHOW_ONLY_BRANDS),
-	showOnlyModels: envOrArray(process.env.SHOW_ONLY_MODELS),
+	showOnlyModels: envOrArray(process.env.SHOW_ONLY_MODELS).map(entry => {
+		const [name, series] = entry.match(/[^:]+/g) ?? [];
+		return {
+			name: envOrString(name),
+			series: envOrString(series)
+		};
+	}),
 	showOnlySeries: envOrArray(process.env.SHOW_ONLY_SERIES, ['3070', '3080', '3090']),
 	stores: envOrArray(process.env.STORES, ['nvidia']).map(entry => {
 		const [name, minPageSleep, maxPageSleep] = entry.match(/[^:]+/g) ?? [];
@@ -269,3 +275,10 @@ export const config = {
 	proxy,
 	store
 };
+
+export function setConfig(newConfig: any) {
+	const writeConfig = config as any;
+	for (const key of Object.keys(newConfig)) {
+		writeConfig[key] = newConfig[key];
+	}
+}
