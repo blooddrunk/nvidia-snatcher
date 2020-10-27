@@ -265,6 +265,11 @@ const store = {
 	})
 };
 
+export const defaultStoreData = {
+	maxPageSleep: browser.maxSleep,
+	minPageSleep: browser.minSleep
+};
+
 export const config = {
 	browser,
 	docker,
