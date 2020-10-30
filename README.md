@@ -30,7 +30,7 @@ The purpose of this bot is to get an Nvidia card. It tries multiple things to do
 
 | | Adorama | Amazon | Amazon (CA) | ASUS | B&H | Best Buy | Best Buy (CA) | EVGA | Micro Center | Newegg | Newegg (CA) | Nvidia | Office Depot | PNY | Zotac |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **3070**| | | | | | `✔` | | | | | | | | `✔` | |
+| **3070**| | | | | | `✔` | `✔` | | | | `✔` | | | `✔` | |
 | **3080** | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` |
 | **3090** | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | `✔` | | `✔` | `✔` | `✔` | | `✔` | `✔` |
 
@@ -44,7 +44,7 @@ You do not need any computer skills, smarts, or anything of that nature. You are
 
 #### Native installation
 
-- [Node.js 14](https://nodejs.org/en/)
+- [Node.js 15](https://nodejs.org/en/)
 - [git](https://git-scm.com/)
 - Clone this project `git clone https://github.com/jef/nvidia-snatcher.git`
 - Run `npm install`
